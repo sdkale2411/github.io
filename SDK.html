@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My App & Knowledge Hub</title>
+  <meta name="description" content="Free tools: Expense Tracker, BMI Calculator, Excel Tutorials, and curated learning videos">
+  <style>
+    body{font-family:Arial,sans-serif;background:#f4f4f9;margin:0}
+    header{background:#343a40;color:#fff;padding:1.2rem 2rem;text-align:center}
+    .container{display:flex;flex-wrap:wrap;justify-content:center;margin:2rem auto;max-width:1200px}
+    .card{background:#fff;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,0.07);margin:1rem;flex:1 1 300px;max-width:330px;padding:1.5rem;transition:transform 0.15s}
+    .card:hover{transform:translateY(-6px) scale(1.04);box-shadow:0 8px 24px rgba(52,58,64,0.09)}
+    .card h2{color:#2a2a72;font-size:1.3rem;margin:0 0 0.7rem 0}
+    .card p{color:#4a4a4a}
+    .category{font-size:0.88rem;color:#5a78fa;margin-bottom:0.5rem;letter-spacing:1px;font-weight:bold}
+    .learn-more{display:inline-block;margin-top:1rem;color:#fff;background:#5a78fa;padding:0.4em 1.1em;border-radius:6px;font-weight:bold;transition:background 0.15s;cursor:pointer;border:none;font-size:1rem;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-appearance:none}
+    .learn-more:hover{background:#2a2a72}
+    .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);overflow:auto}
+    .modal-content{background-color:#fff;margin:3% auto;padding:2rem;border-radius:12px;width:90%;max-width:900px;box-shadow:0 8px 32px rgba(0,0,0,0.2);max-height:85vh;overflow-y:auto}
+    .close{color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer}
+    .close:hover{color:#000}
+    .expense-form input,.expense-form select,.calc-input{width:100%;padding:0.7rem;margin:0.5rem 0;border:1px solid #ddd;border-radius:6px;font-size:1rem;box-sizing:border-box}
+    .expense-form button{width:100%;padding:0.8rem;background:#28a745;color:white;border:none;border-radius:6px;font-size:1rem;cursor:pointer;margin-top:0.5rem}
+    #expenseList{max-height:300px;overflow-y:auto}
+    .exp-item{background:#f8f9fa;padding:1rem;margin:0.5rem 0;border-radius:6px;display:flex;justify-content:space-between;border-left:4px solid #5a78fa}
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:1rem}
+    .video-card{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:1rem;cursor:pointer;transition:all 0.3s;text-decoration:none;color:inherit;display:block}
+    .video-card:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(0,0,0,0.15);border-color:#5a78fa}
+    .video-thumbnail{width:100%;height:160px;background:#000;border-radius:8px;margin-bottom:0.8rem;display:flex;align-items:center;justify-content:center;font-size:3rem;color:#fff;overflow:hidden}
+    .video-thumbnail img{width:100%;height:100%;object-fit:cover}
+    .video-title{font-weight:bold;font-size:1rem;color:#2a2a72;margin-bottom:0.5rem;line-height:1.4}
+    .video-category{font-size:0.85rem;color:#5a78fa;font-weight:bold;margin-bottom:0.3rem}
+    .video-desc{font-size:0.9rem;color:#6c757d;line-height:1.4}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>My App & Knowledge Hub</h1>
+  <p>Explore Apps, Excel Wisdom, and Life Tips!</p>
+</header>
+
+<section class="container">
+  <div class="card">
+    <div class="category">APP</div>
+    <h2>💰 Expense Tracker</h2>
+    <p>Track expenses with budget alerts and export features.</p>
+    <button class="learn-more" onclick="openModal('expenseModal')">Try App</button>
+  </div>
+  
+  <div class="card">
+    <div class="category">EXCEL</div>
+    <h2>📊 VLOOKUP Tutorial</h2>
+    <p>Master VLOOKUP with real examples.</p>
+    <button class="learn-more" onclick="openModal('vlookupModal')">Learn More</button>
+  </div>
+  
+  <div class="card">
+    <div class="category">CALCULATOR</div>
+    <h2>🎂 Age Calculator</h2>
+    <p>Calculate your exact age in years, months, days.</p>
+    <button class="learn-more" onclick="openModal('ageModal')">Calculate</button>
+  </div>
+  
+  <div class="card">
+    <div class="category">HEALTH</div>
+    <h2>⚖️ BMI Calculator</h2>
+    <p>Calculate your Body Mass Index and health category.</p>
+    <button class="learn-more" onclick="openModal('bmiModal')">Calculate</button>
+  </div>
+  
+  <div class="card">
+    <div class="category">VIDEO LIBRARY</div>
+    <h2>🎥 YouTube Videos</h2>
+    <p>Curated videos on AI, Marketing, Excel, and Productivity.</p>
+    <button class="learn-more" onclick="openModal('videoModal')">Watch Videos</button>
+  </div>
+</section>
+
+<!-- Expense Modal -->
+<div id="expenseModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('expenseModal')">&times;</span>
+    <h2>💰 Expense Tracker</h2>
+    <div class="expense-form">
+      <input type="text" id="expName" placeholder="Expense Name">
+      <input type="number" id="expAmount" placeholder="Amount (₹)">
+      <select id="expCategory">
+        <option value="Food">Food</option>
+        <option value="Transport">Transport</option>
+        <option value="Shopping">Shopping</option>
+      </select>
+      <input type="date" id="expDate">
+      <button onclick="addExpense()">Add Expense</button>
+    </div>
+    <div id="expenseList"></div>
+    <div id="totalDisplay" style="font-size:1.5em;margin-top:1em;">Total: ₹0</div>
+  </div>
+</div>
+
+<!-- VLOOKUP Modal -->
+<div id="vlookupModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('vlookupModal')">&times;</span>
+    <h2>📊 VLOOKUP Tutorial</h2>
+    <h3>What is VLOOKUP?</h3>
+    <p>VLOOKUP searches for a value in the first column of a table and returns a value in the same row from another column.</p>
+    <h4>Syntax:</h4>
+    <code>=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])</code>
+    <h3>Example 1: Employee Lookup</h3>
+    <p>Find employee salary by ID:</p>
+    <table style="width:100%;border-collapse:collapse;margin:1em 0;">
+      <tr style="background:#5a78fa;color:white;">
+        <th style="border:1px solid #ddd;padding:0.5em;">ID</th>
+        <th style="border:1px solid #ddd;padding:0.5em;">Name</th>
+        <th style="border:1px solid #ddd;padding:0.5em;">Salary</th>
+      </tr>
+      <tr>
+        <td style="border:1px solid #ddd;padding:0.5em;">101</td>
+        <td style="border:1px solid #ddd;padding:0.5em;">John</td>
+        <td style="border:1px solid #ddd;padding:0.5em;">50000</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #ddd;padding:0.5em;">102</td>
+        <td style="border:1px solid #ddd;padding:0.5em;">Sarah</td>
+        <td style="border:1px solid #ddd;padding:0.5em;">60000</td>
+      </tr>
+    </table>
+    <p>Formula: <code>=VLOOKUP(101, A2:C3, 3, FALSE)</code> returns 50000</p>
+    <h3>Example 2: Product Price Lookup</h3>
+    <p>Formula: <code>=VLOOKUP("Laptop", A2:B10, 2, FALSE)</code></p>
+  </div>
+</div>
+
+<!-- Age Modal -->
+<div id="ageModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('ageModal')">&times;</span>
+    <h2>🎂 Age Calculator</h2>
+    <input type="date" id="birthDate" class="calc-input">
+    <button onclick="calculateAge()" style="width:100%;padding:0.8em;background:#28a745;color:white;border:none;border-radius:6px;cursor:pointer;margin-top:1em;">Calculate Age</button>
+    <div id="ageResult"></div>
+  </div>
+</div>
+
+<!-- BMI Modal -->
+<div id="bmiModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('bmiModal')">&times;</span>
+    <h2>⚖️ BMI Calculator</h2>
+    <input type="number" id="weight" class="calc-input" placeholder="Weight (kg)">
+    <input type="number" id="height" class="calc-input" placeholder="Height (cm)">
+    <button onclick="calculateBMI()" style="width:100%;padding:0.8em;background:#28a745;color:white;border:none;border-radius:6px;cursor:pointer;margin-top:1em;">Calculate BMI</button>
+    <div id="bmiResult"></div>
+  </div>
+</div>
+
+<!-- YouTube Video Modal -->
+<div id="videoModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('videoModal')">&times;</span>
+    <h2>🎥 YouTube Video Library</h2>
+    <p style="color:#6c757d;margin-bottom:1.5rem;">Click any video to watch on YouTube</p>
+    <div class="video-grid" id="videoGrid"></div>
+  </div>
+</div>
+
+<script>
+let expenses=JSON.parse(localStorage.getItem('expenses'))||[];
+
+const videos=[
+{cat:'AI',title:'AI for Digital Marketing in 2025',desc:'Learn how to leverage AI tools for marketing automation',url:'https://youtube.com/results?search_query=AI+digital+marketing+2025'},
+{cat:'EXCEL',title:'Advanced Excel Functions',desc:'Master VLOOKUP, XLOOKUP, and Power Query',url:'https://youtube.com/results?search_query=advanced+excel+functions+tutorial'},
+{cat:'AI',title:'ChatGPT for Project Managers',desc:'How to use ChatGPT for project management tasks',url:'https://youtube.com/results?search_query=chatgpt+for+project+managers'},
+{cat:'MARKETING',title:'Content Creation with AI',desc:'Create professional content using AI tools',url:'https://youtube.com/results?search_query=AI+content+creation+tools'},
+{cat:'PRODUCTIVITY',title:'Time Management Strategies',desc:'Productivity hacks for busy professionals',url:'https://youtube.com/results?search_query=time+management+productivity+hacks'},
+{cat:'EXCEL',title:'Excel Dashboard Tutorial',desc:'Build interactive dashboards in Excel',url:'https://youtube.com/results?search_query=excel+dashboard+tutorial'},
+{cat:'LEADERSHIP',title:'Customer Success Leadership',desc:'Building high-performing customer success teams',url:'https://youtube.com/results?search_query=customer+success+leadership'},
+{cat:'AI',title:'Google Gemini Tutorial',desc:'Complete guide to Google Gemini AI',url:'https://youtube.com/results?search_query=google+gemini+ai+tutorial'},
+{cat:'MARKETING',title:'LinkedIn Marketing Strategy',desc:'Grow your professional brand on LinkedIn',url:'https://youtube.com/results?search_query=linkedin+marketing+strategy'}
+];
+
+function openModal(id){
+document.getElementById(id).style.display='block';
+if(id==='expenseModal')updateExpenseList();
+if(id==='videoModal')loadVideos();
+}
+
+function closeModal(id){document.getElementById(id).style.display='none';}
+
+window.onclick=function(e){if(e.target.classList.contains('modal'))e.target.style.display='none';}
+
+function addExpense(){
+const name=document.getElementById('expName').value.trim();
+const amt=parseFloat(document.getElementById('expAmount').value);
+const cat=document.getElementById('expCategory').value;
+const date=document.getElementById('expDate').value;
+if(!name||!amt||!cat||!date){alert('Fill all fields');return;}
+expenses.push({id:Date.now(),name,amount:amt,category:cat,date});
+localStorage.setItem('expenses',JSON.stringify(expenses));
+document.getElementById('expName').value='';
+document.getElementById('expAmount').value='';
+document.getElementById('expDate').value='';
+updateExpenseList();
+}
+
+function deleteExpense(id){
+if(confirm('Delete?')){
+expenses=expenses.filter(e=>e.id!==id);
+localStorage.setItem('expenses',JSON.stringify(expenses));
+updateExpenseList();
+}
+}
+
+function updateExpenseList(){
+const list=document.getElementById('expenseList');
+const total=expenses.reduce((s,e)=>s+e.amount,0);
+document.getElementById('totalDisplay').innerHTML='Total: ₹'+total.toFixed(2
